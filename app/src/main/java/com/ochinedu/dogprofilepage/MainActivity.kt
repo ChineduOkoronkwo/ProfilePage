@@ -3,13 +3,14 @@ package com.ochinedu.dogprofilepage
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.ochinedu.dogprofilepage.ui.theme.DogProfilePageTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +23,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ProfilePage()
+//                    ProfilePage()
+                    Greeting()
                 }
             }
         }
@@ -30,14 +32,35 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun Greeting() {
+    var nameState by remember {
+        mutableStateOf(value="")
+    }
+
+    var name by rememberSaveable {
+        mutableStateOf(value="")
+    }
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally,
+    modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center){
+        Text(text="Hello $name")
+        Spacer(modifier = Modifier.height(5.dp))
+        TextField(value = nameState, onValueChange = {
+            nameState = it
+        })
+        Spacer(modifier = Modifier.height(5.dp))
+        Button(onClick = {
+            name = nameState
+        }) {
+            Text(text = "Display")
+        }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     DogProfilePageTheme {
-        Greeting("welcome to my first app")
+        Greeting()
     }
 }
